@@ -5,10 +5,11 @@ public class Pizza {
   private int price;
   private Boolean isVeg;
   private String bill = "";
-  private int extraTopp = 0;
-  private int extraCheese = 0;
+  private boolean extraTopp;
+  private boolean extraCheese;
   boolean isTakeaway;
   boolean isDeluxe;
+  private int bPrice;
 
   public Pizza(Boolean isVeg) {
     this.isVeg = isVeg;
@@ -16,6 +17,7 @@ public class Pizza {
 
     // setting base price
     this.price = this.isVeg ? 300 : 400;
+    this.bPrice = this.isVeg ? 300 : 400;
   }
 
   public Pizza(Boolean isVeg, Boolean isDeluxe) {
@@ -27,6 +29,7 @@ public class Pizza {
     this.price = this.isVeg ? 300 : 400;
     this.price += 80;
     this.price += this.isVeg ? 70 : 120;
+    this.bPrice = this.price;
   }
 
   public int getPrice() {
@@ -35,34 +38,40 @@ public class Pizza {
 
   public void addExtraCheese() {
     // your code goes here
-    if (!this.isDeluxe) this.extraCheese = 80;
+    if (!this.isDeluxe && !this.extraCheese) {
+      this.extraCheese = true;
+      this.price += 80;
+    }
   }
 
   public void addExtraToppings() {
     // your code goes here
-    if (!this.isDeluxe) this.extraTopp = this.isVeg ? 70 : 120;
+    if (!this.isDeluxe && !this.extraTopp) {
+      this.extraTopp = true;
+      this.price += this.isVeg ? 70 : 120;
+    }
   }
 
   public void addTakeaway() {
     // your code goes here
-    this.isTakeaway = true;
+    if (!this.isTakeaway) {
+      this.isTakeaway = true;
+      this.price += 20;
+    }
   }
 
   public String getBill() {
     // your code goes here
-    this.bill = "Base Price Of The Pizza: " + String.valueOf(this.price);
-    if (this.extraCheese != 0) this.bill +=
-      "\nExtra Cheese Added: " + String.valueOf(this.extraCheese);
-    if (this.extraTopp != 0) this.bill +=
-      "\nExtra Toppings Added: " + String.valueOf(this.extraTopp);
+    this.bill = "Base Price Of The Pizza: " + String.valueOf(this.bPrice);
+    if (this.extraCheese) this.bill +=
+      "\nExtra Cheese Added: " + String.valueOf(80);
+    if (this.extraTopp) this.bill +=
+      "\nExtra Toppings Added: " + String.valueOf(this.isVeg ? 70 : 120);
     if (this.isTakeaway) {
       this.bill += "\nPaperbag Added: 20";
-      this.price += 20;
     }
 
-    this.bill +=
-      "\nTotal Price: " +
-      String.valueOf(this.price + this.extraCheese + this.extraTopp);
+    this.bill += "\nTotal Price: " + String.valueOf(this.price);
     return this.bill;
   }
 }
